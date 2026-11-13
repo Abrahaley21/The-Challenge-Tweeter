@@ -1,0 +1,27 @@
+<%- include('../partials/header', { title }) %>
+<div class="page-heading">
+  <div><h1>Latest tweets</h1><p>Browse posts from the community.</p></div>
+  <a class="button" href="/tweets/new">+ Create tweet</a>
+</div>
+<% if (tweets.length === 0) { %>
+  <section class="empty-state"><h2>No tweets yet</h2><p>Be the first to publish one.</p><a class="button" href="/tweets/new">Create a tweet</a></section>
+<% } %>
+<div class="tweet-list">
+  <% tweets.forEach(item => { %>
+    <article class="tweet-card">
+      <h2><a href="/tweets/<%= item._id %>"><%= item.title %></a></h2>
+      <p class="tweet-text"><%= item.tweet %></p>
+      <div class="meta">By <%= item.author ? item.author.name : 'Unknown user' %> · <%= item.createdAt.toLocaleString() %></div>
+      <div class="actions">
+        <a href="/tweets/<%= item._id %>">View</a>
+        <% if (item.author && item.author._id.toString() === currentUser.id) { %>
+          <a href="/tweets/<%= item._id %>/edit">Edit</a>
+          <form class="inline-form" action="/tweets/<%= item._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Delete this tweet?')">
+            <button class="text-button danger-text" type="submit">Delete</button>
+          </form>
+        <% } %>
+      </div>
+    </article>
+  <% }) %>
+</div>
+<%- include('../partials/footer') %>

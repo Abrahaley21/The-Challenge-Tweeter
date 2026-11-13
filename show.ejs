@@ -1,0 +1,16 @@
+<%- include('../partials/header', { title }) %>
+<article class="tweet-card single-tweet">
+  <h1><%= tweet.title %></h1>
+  <p class="tweet-text"><%= tweet.tweet %></p>
+  <div class="meta">By <%= tweet.author ? tweet.author.name : 'Unknown user' %> · <%= tweet.createdAt.toLocaleString() %></div>
+  <div class="actions">
+    <a href="/tweets">← All tweets</a>
+    <% if (tweet.author && tweet.author._id.toString() === currentUser.id) { %>
+      <a href="/tweets/<%= tweet._id %>/edit">Edit</a>
+      <form class="inline-form" action="/tweets/<%= tweet._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Delete this tweet?')">
+        <button class="text-button danger-text" type="submit">Delete</button>
+      </form>
+    <% } %>
+  </div>
+</article>
+<%- include('../partials/footer') %>
